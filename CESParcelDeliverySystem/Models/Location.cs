@@ -10,5 +10,12 @@ namespace CESParcelDeliverySystem.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public bool IsActive { get; set; }
+
+        public Location(int id, string name, bool isActive)
+        {
+            this.Id = id;
+            this.Name = name;
+            this.IsActive = isActive;
+        }
     }
 }

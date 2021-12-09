@@ -23,13 +23,14 @@ namespace CESParcelDeliverySystem.Data
 
         public CesContext()
         {
-
         }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Server=tcp:dbs-oa-dk2.database.windows.net,1433;Initial Catalog=db-oa-dk2;Persist Security Info=False;User ID=admin-oa-dk2;Password=oceanicFlyAway16;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+                optionsBuilder.UseSqlServer(
+                    @"Server=tcp:dbs-oa-dk2.database.windows.net,1433;Initial Catalog=db-oa-dk2;Persist Security Info=False;User ID=admin-oa-dk2;Password=oceanicFlyAway16;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
     }

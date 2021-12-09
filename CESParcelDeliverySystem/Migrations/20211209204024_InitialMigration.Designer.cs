@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CESParcelDeliverySystem.Migrations
 {
     [DbContext(typeof(CesContext))]
-    [Migration("20211209125921_ConnectionsUpdate")]
-    partial class ConnectionsUpdate
+    [Migration("20211209204024_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -64,7 +64,7 @@ namespace CESParcelDeliverySystem.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("FromLocationId")
+                    b.Property<int>("FromLocation")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
@@ -73,17 +73,13 @@ namespace CESParcelDeliverySystem.Migrations
                     b.Property<int>("Moves")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ToLocationId")
+                    b.Property<int>("ToLocation")
                         .HasColumnType("int");
 
                     b.Property<string>("TransportationMode")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FromLocationId");
-
-                    b.HasIndex("ToLocationId");
 
                     b.ToTable("Connection");
                 });
@@ -140,7 +136,7 @@ namespace CESParcelDeliverySystem.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CostumerId")
+                    b.Property<int>("Costumer")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
@@ -149,7 +145,7 @@ namespace CESParcelDeliverySystem.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
-                    b.Property<int?>("FromLocationId")
+                    b.Property<int>("FromLocation")
                         .HasColumnType("int");
 
                     b.Property<int>("Height")
@@ -161,22 +157,16 @@ namespace CESParcelDeliverySystem.Migrations
                     b.Property<int>("Length")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Price")
-                        .HasColumnType("bit");
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
 
-                    b.Property<int?>("ToLocationId")
+                    b.Property<int>("ToLocation")
                         .HasColumnType("int");
 
                     b.Property<int>("Width")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CostumerId");
-
-                    b.HasIndex("FromLocationId");
-
-                    b.HasIndex("ToLocationId");
 
                     b.ToTable("Order");
                 });
@@ -188,17 +178,13 @@ namespace CESParcelDeliverySystem.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("OrderId")
+                    b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TypeId")
+                    b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("TypeId");
 
                     b.ToTable("OrderType");
                 });
@@ -240,25 +226,19 @@ namespace CESParcelDeliverySystem.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
-                    b.Property<int?>("FromLocationId")
+                    b.Property<int>("FromLocation")
                         .HasColumnType("int");
 
-                    b.Property<int?>("OrderId")
+                    b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
 
-                    b.Property<int?>("ToLocationId")
+                    b.Property<int>("ToLocation")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FromLocationId");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ToLocationId");
 
                     b.ToTable("Shipment");
                 });
@@ -273,7 +253,7 @@ namespace CESParcelDeliverySystem.Migrations
                     b.Property<string>("ContentType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Fee")
+                    b.Property<double?>("Fee")
                         .HasColumnType("float");
 
                     b.Property<bool>("IsActive")
@@ -309,78 +289,6 @@ namespace CESParcelDeliverySystem.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User");
-                });
-
-            modelBuilder.Entity("CESParcelDeliverySystem.Models.Connection", b =>
-                {
-                    b.HasOne("CESParcelDeliverySystem.Models.Location", "FromLocation")
-                        .WithMany()
-                        .HasForeignKey("FromLocationId");
-
-                    b.HasOne("CESParcelDeliverySystem.Models.Location", "ToLocation")
-                        .WithMany()
-                        .HasForeignKey("ToLocationId");
-
-                    b.Navigation("FromLocation");
-
-                    b.Navigation("ToLocation");
-                });
-
-            modelBuilder.Entity("CESParcelDeliverySystem.Models.Order", b =>
-                {
-                    b.HasOne("CESParcelDeliverySystem.Models.Costumer", "Costumer")
-                        .WithMany()
-                        .HasForeignKey("CostumerId");
-
-                    b.HasOne("CESParcelDeliverySystem.Models.Location", "FromLocation")
-                        .WithMany()
-                        .HasForeignKey("FromLocationId");
-
-                    b.HasOne("CESParcelDeliverySystem.Models.Location", "ToLocation")
-                        .WithMany()
-                        .HasForeignKey("ToLocationId");
-
-                    b.Navigation("Costumer");
-
-                    b.Navigation("FromLocation");
-
-                    b.Navigation("ToLocation");
-                });
-
-            modelBuilder.Entity("CESParcelDeliverySystem.Models.OrderType", b =>
-                {
-                    b.HasOne("CESParcelDeliverySystem.Models.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId");
-
-                    b.HasOne("CESParcelDeliverySystem.Models.Type", "Type")
-                        .WithMany()
-                        .HasForeignKey("TypeId");
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Type");
-                });
-
-            modelBuilder.Entity("CESParcelDeliverySystem.Models.Shipment", b =>
-                {
-                    b.HasOne("CESParcelDeliverySystem.Models.Location", "FromLocation")
-                        .WithMany()
-                        .HasForeignKey("FromLocationId");
-
-                    b.HasOne("CESParcelDeliverySystem.Models.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId");
-
-                    b.HasOne("CESParcelDeliverySystem.Models.Location", "ToLocation")
-                        .WithMany()
-                        .HasForeignKey("ToLocationId");
-
-                    b.Navigation("FromLocation");
-
-                    b.Navigation("Order");
-
-                    b.Navigation("ToLocation");
                 });
 #pragma warning restore 612, 618
         }
