@@ -49,7 +49,7 @@ namespace CESParcelDeliverySystem.Controllers
             basePrices["fly"] = Convert.ToDouble(x.Price);
 
             Dictionary<string, int> baseDurations = new Dictionary<string, int>();
-            baseDurations["shipping"] = 10;
+            baseDurations["shipping"] = 12;
             baseDurations["trucking"] = 4;
             baseDurations["fly"] = 8;
 
@@ -109,8 +109,10 @@ namespace CESParcelDeliverySystem.Controllers
                     return BadRequest();
 
                 CesContext context = new CesContext();
-                int toId = context.Connection.First(c => c.ToLocation.ToString() == shipmentRequest.To).Id;
-                int fromId = context.Connection.First(c => c.FromLocation.ToString() == shipmentRequest.From).Id;
+                var ss = shipmentRequest;
+
+                int toId = context.Location.First(c => c.Name == shipmentRequest.To).Id;
+                int fromId = context.Location.First(c => c.Name == shipmentRequest.From).Id;
 
                 var parcelMapper = new ParcelMapper
                 {
@@ -126,20 +128,20 @@ namespace CESParcelDeliverySystem.Controllers
                 var x = context.Pricing.First(p => p.SizeCategory == sizeCategory && p.WeightCategory == weightCategory);
 
                 Dictionary<string, double> basePrices = new Dictionary<string, double>();
-                basePrices["shipping"] = Convert.ToDouble(x.LatestShippingPrice);
-                basePrices["trucking"] = Convert.ToDouble(x.LatestTruckingPrice);
+                basePrices["boat"] = Convert.ToDouble(x.LatestShippingPrice);
+                basePrices["truck"] = Convert.ToDouble(x.LatestTruckingPrice);
                 basePrices["fly"] = Convert.ToDouble(x.Price);
 
                 Dictionary<string, int> baseDurations = new Dictionary<string, int>();
-                baseDurations["shipping"] = 10;
-                baseDurations["trucking"] = 4;
+                baseDurations["boat"] = 12;
+                baseDurations["truck"] = 4;
                 baseDurations["fly"] = 8;
 
-                double? multiplier = context.Type.FirstOrDefault(m => m.ContentType == shipmentRequest.Type).Fee;
-
+                var multiplier = context.Type.FirstOrDefault(m => m.ContentType == shipmentRequest.Type);
+                
                 if (multiplier != null)
                 {
-                    basePrices["fly"] = basePrices["fly"] * Convert.ToDouble(multiplier);
+                    basePrices["fly"] = basePrices["fly"] * Convert.ToDouble(multiplier.Fee);
                 }
 
                 // Set up network
@@ -151,13 +153,17 @@ namespace CESParcelDeliverySystem.Controllers
                 foreach (var edge in network)
                 {
                     string _type = edge.TransportationMode.ToLower();
-                    EdgeDTO edgeDto = new EdgeDTO();
-                    edgeDto.Destination = edge.FromLocation;
-                    edgeDto.Destination = edge.ToLocation;
-                    edgeDto.PriceInDollars = Convert.ToInt32(Convert.ToDouble(edge.Moves) * basePrices[_type]);
-                    edgeDto.DurationInHours = edge.Moves * baseDurations[_type];
-                    edgeDto.TransportMode = _type;
+                    EdgeDTO edgeDto = new EdgeDTO
+                    {
+                        Origin = edge.FromLocation,
+                        Destination = edge.ToLocation,
+                        PriceInDollars = Convert.ToInt32(Convert.ToDouble(edge.Moves) * basePrices[_type]),
+                        DurationInHours = edge.Moves * baseDurations[_type],
+                        TransportMode = _type,
+                    };
+
                     edges.Add(edgeDto);
+                    
                 }
 
                 // Calculation to be performed here. 
