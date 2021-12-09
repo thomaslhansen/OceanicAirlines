@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CESParcelDeliverySystem.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace CESParcelDeliverySystem.BusinessLogic.RoutePlanner
 		private int _location;
 		private int _destination;
 
-		public Planner(int noOfVertices, int network, int location, int destination) //network should not be a var
+		public Planner(int noOfVertices, List<EdgeDTO> edges, int location, int destination) //network should not be a var
 		{
 			this._location = location;
 			this._destination = destination;
@@ -28,11 +29,47 @@ namespace CESParcelDeliverySystem.BusinessLogic.RoutePlanner
 					this._tabuMatrix[i, j] = new List<Tuple<double, double>>();
 				}
 			}
-			//i[0, 0].Add((4, 2));
-			this._graph = CreateGraph(noOfVertices, network);
+			this._graph = CreateGraph(noOfVertices, edges);
+			//this._graph = CreateGraph(noOfVertices);
 			this._openNodes = new Queue<SearchNode>();
 			this._solutions = new List<SearchNode>();
 		}
+
+        private Graph CreateGraph(int noOfVertices, List<EdgeDTO> edges)
+        {
+			Graph graph = new Graph(noOfVertices);
+			foreach (EdgeDTO edge in edges)
+            {
+                Edge.Type type = ExtractType(edge);
+                graph.AddEdge(new Edge(edge.Origin, edge.Destination, edge.PriceInDollars, edge.DurationInHours, type));
+            }
+            return graph;
+		}
+
+        private static Edge.Type ExtractType(EdgeDTO edge)
+        {
+            Edge.Type type;
+            if (edge.TransportMode == "fly")
+            {
+                type = Edge.Type.Plane;
+
+            }
+            else if (edge.TransportMode == "truck")
+            {
+                type = Edge.Type.Truck;
+
+            }
+            else if (edge.TransportMode == "boat")
+            {
+                type = Edge.Type.Ship;
+            }
+            else
+            {
+                throw new Exception("This is not a valid type of transportation!");
+            }
+
+            return type;
+        }
 
         public List<SearchNode> Plan()
         {
@@ -101,7 +138,7 @@ namespace CESParcelDeliverySystem.BusinessLogic.RoutePlanner
 			return false;
 		}
 
-		private Graph CreateGraph(int noOfVertices, int network)
+		private Graph CreateGraphTest(int noOfVertices)
         {
 			return GetDummyGraphPlaneTruck(noOfVertices);
 		}
