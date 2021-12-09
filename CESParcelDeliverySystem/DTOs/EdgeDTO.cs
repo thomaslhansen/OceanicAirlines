@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 
 namespace CESParcelDeliverySystem.DTOs
 {
-    public class RouteInformationDTO
+    public class EdgeDTO
     {
-        public int Id { get; set; }
+        public int Origin { get; set; }
 
-        public string Origin { get; set; }
-
-        public string Destination { get; set; }
+        public int Destination { get; set; }
 
         public int PriceInDollars { get; set; }
 
         public int DurationInHours { get; set; }
+
+        public string TransportMode { get; set; }
     }
 }

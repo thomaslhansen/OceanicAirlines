@@ -20,7 +20,7 @@ namespace CESParcelDeliverySystem.Connectors
         public async void FetchData()
         {
 
-            string baseUrl = "http://pokeapi.co/api/v2/pokemon/";
+            string baseUrl = "/planroute/";
             try
             {
                 using (HttpClient client = new HttpClient())
