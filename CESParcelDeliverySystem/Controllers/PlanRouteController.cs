@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CESParcelDeliverySystem.DTOs;
+using CESParcelDeliverySystem.Data;
+using CESParcelDeliverySystem.Calculators;
 
 namespace CESParcelDeliverySystem.Controllers
 {
@@ -22,20 +24,15 @@ namespace CESParcelDeliverySystem.Controllers
         [HttpGet]
         public ResponseDTO Get()
         {
+            CesContext context = new CesContext();
+
+            var data = context.Connection.Where(c => c.TransportationMode == "Fly");
+
+            // Calculation to be performed here. 
+            List<RouteInformationDTO> responseData = new Calculator().GetOptimalRoutes();
+
             var testPayload = new Dictionary<string, List<RouteInformationDTO>>();
-
-            testPayload["routeInformation"] = new List<RouteInformationDTO>();
-
-            var testRouteInformation = new RouteInformationDTO
-            {
-                Id = 1,
-                Origin = "city",
-                Destination = "sdf",
-                PriceInDollars = 40,
-                DurationInHours = 8
-            };
-
-            testPayload["routeInformation"].Add(testRouteInformation);
+            testPayload["routeInformation"] = responseData;
 
             var response = new ResponseDTO
             {
@@ -44,7 +41,6 @@ namespace CESParcelDeliverySystem.Controllers
                 Payload = testPayload,
                 RoutesAreSupported = true,
                 Message = "200 - OK"
-
             };
 
             return response;
