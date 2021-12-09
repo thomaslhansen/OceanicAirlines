@@ -4,14 +4,16 @@ using CESParcelDeliverySystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CESParcelDeliverySystem.Migrations
 {
     [DbContext(typeof(CesContext))]
-    partial class CesContextModelSnapshot : ModelSnapshot
+    [Migration("20211209123804_UpdatedPricingScheme")]
+    partial class UpdatedPricingScheme
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,14 +70,8 @@ namespace CESParcelDeliverySystem.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Moves")
-                        .HasColumnType("int");
-
                     b.Property<int?>("ToLocationId")
                         .HasColumnType("int");
-
-                    b.Property<string>("TransportationMode")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -217,13 +213,15 @@ namespace CESParcelDeliverySystem.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.Property<string>("SizeCategory")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("SizeCategoryId")
+                        .HasColumnType("int");
 
                     b.Property<string>("WeightCategory")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SizeCategoryId");
 
                     b.ToTable("Pricing");
                 });
@@ -358,6 +356,15 @@ namespace CESParcelDeliverySystem.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("Type");
+                });
+
+            modelBuilder.Entity("CESParcelDeliverySystem.Models.Pricing", b =>
+                {
+                    b.HasOne("CESParcelDeliverySystem.Models.Category", "SizeCategory")
+                        .WithMany()
+                        .HasForeignKey("SizeCategoryId");
+
+                    b.Navigation("SizeCategory");
                 });
 
             modelBuilder.Entity("CESParcelDeliverySystem.Models.Shipment", b =>

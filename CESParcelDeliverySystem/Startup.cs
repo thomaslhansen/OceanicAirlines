@@ -41,6 +41,7 @@ namespace CESParcelDeliverySystem
                 app.UseExceptionHandler("/Error");
             }
 
+
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
