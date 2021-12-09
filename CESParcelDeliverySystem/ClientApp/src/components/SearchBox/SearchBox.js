@@ -15,31 +15,9 @@ import Box from '@material-ui/core/Box';
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 
 
-export default function SearchBox() {
+export default function SearchBox(props) {
 
-  const [selectedDate, setSelectedDate] = useState(new Date('2014-08-18T21:11:54'));
-  const [locations, setLocations] = useState();
-
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
-  const setLocationData = (data) =>{
-    setLocations(data.map(location => ({title: location.locationName, id: location.locationId})))
-  }
-
-  useEffect(() => {
-    fetch('/getlocations')
-  .then(response => response.json())
-  .then(data => setLocationData(data));
-  },[]);
-
-  const getCheapestRoute = () => {
-  }
-  const getFastestRoute = () => {
-
-  }
+  
 
 
   return (
@@ -52,13 +30,13 @@ export default function SearchBox() {
           </Typography>
             <List>
               <ListItem>
-                <TextField id="weigth" label="Weight" />
+                <TextField id="weight" label="Weight" />
               </ListItem>
               <ListItem>
                 <TextField id="height" label="Height" />
               </ListItem>
               <ListItem>
-                <TextField id="Length" label="Length" />
+                <TextField id="length" label="Length" />
               </ListItem>
               <ListItem>
                 <TextField id="width" label="Width" />
@@ -84,7 +62,7 @@ export default function SearchBox() {
               <Grid item xs={1}>
                 <Autocomplete
                   id="from"
-                  options={locations}
+                  options={props.locations}
                   getOptionLabel={(option) => option.title}
                   style={{ width: 300 }}
                   renderInput={(params) => <TextField {...params} label="From" variant="outlined" />}
@@ -93,7 +71,7 @@ export default function SearchBox() {
                 <Grid item xs={1}>
                 <Autocomplete
                   id="to"
-                  options={locations}
+                  options={props.locations}
                   getOptionLabel={(option) => option.title}
                   style={{ width: 300 }}
                   renderInput={(params) => <TextField {...params} label="To" variant="outlined" />}
@@ -115,8 +93,8 @@ export default function SearchBox() {
                   margin="normal"
                   id="date-picker-inline"
                   label="Date picker inline"
-                  value={selectedDate}
-                  onChange={handleDateChange}
+                  value={props.selectedDate}
+                  onChange={props.handleDateChange}
                   KeyboardButtonProps={{
                       'aria-label': 'change date',
                   }}
@@ -125,10 +103,10 @@ export default function SearchBox() {
               </Grid>
               <Box mt={20} mr={2}>
                 <ButtonGroup variant='contained' color="primary" aria-label="contained primary button group">
-                  <Button onClick={getFastestRoute}>
+                  <Button onClick={() => { props.getRoutes("fastest")}}>
                     Search fastest route
                   </Button>
-                  <Button onClick={getCheapestRoute}>
+                  <Button onClick={() => { props.getRoutes("cheapest")}}>
                     Search cheapest route
                   </Button>
                 </ButtonGroup>

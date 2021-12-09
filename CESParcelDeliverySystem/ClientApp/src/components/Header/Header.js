@@ -35,7 +35,7 @@ const Header = props => {
           className={classes.title}
         >
         </Typography>
-        <Link to="/plan-route">
+        <Link to="/plan-a-route">
         <Button color="secondary">
           Plan Route
         </Button>
