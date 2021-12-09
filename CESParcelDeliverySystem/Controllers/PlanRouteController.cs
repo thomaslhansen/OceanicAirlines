@@ -145,7 +145,11 @@ namespace CESParcelDeliverySystem.Controllers
                 }
 
                 // Set up network
-                int nodes = context.Connection.Select(f => f.ToLocation).Distinct().Count();
+                var toNodes = context.Connection.Select(f => f.ToLocation).Distinct().ToList();
+                var fromNodes = context.Connection.Select(f => f.FromLocation).Distinct().ToList();
+                var finalNodes = toNodes.Concat(fromNodes);
+                int nodes = finalNodes.Distinct().Count();
+
                 var network = context.Connection.ToList();
 
                 List<EdgeDTO> edges = new List<EdgeDTO>();
