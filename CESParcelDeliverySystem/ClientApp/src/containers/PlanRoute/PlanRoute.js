@@ -1,32 +1,24 @@
-import React from "react";
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card"
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Typography from "@material-ui/core/Typography";
-
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from 'react';
+import SearchBox from '../../components/SearchBox/SearchBox'
+import SearchTable from '../../components/SearchTable/SearchTable'
+import Grid from '@material-ui/core/Grid';
 
 export default function PlanRoute() {
 
-
-  const dispatch = useDispatch();
-
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center"
-      }}
-    >
-      <Card>
-        <CardContent>
-          Plane Route
-        </CardContent>
-        <CardActions>
-        </CardActions>
-      </Card>
-    </div>
+
+      <Grid container
+        spacing={4}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        style={{ minHeight: '100vh' }}>
+          <Grid item style={{ minWidth: '70vw' }}>
+          <SearchBox/>
+          </Grid>
+          <Grid item style={{ minWidth: '90vw' }}>
+          <SearchTable/>
+          </Grid>
+        </Grid>
   );
 };
