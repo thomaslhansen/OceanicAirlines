@@ -30,16 +30,16 @@ export default function SearchBox(props) {
           </Typography>
             <List>
               <ListItem>
-                <TextField id="weight" label="Weight" />
+                <TextField id="weight" label="Weight" type="number"/>
               </ListItem>
               <ListItem>
-                <TextField id="height" label="Height" />
+                <TextField id="height" label="Height" type="number"/>
               </ListItem>
               <ListItem>
-                <TextField id="length" label="Length" />
+                <TextField id="length" label="Length" type="number"/>
               </ListItem>
               <ListItem>
-                <TextField id="width" label="Width" />
+                <TextField id="width" label="Width" type="number"/>
               </ListItem>
               <ListItem>
               <Autocomplete

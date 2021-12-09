@@ -15,17 +15,17 @@ export default function PlanRoute() {
   };
 
   const setLocationData = (data) => {
-    setLocations(data.map(location => ({title: location.locationName, id: location.locationId, value: location.locationId})))
+    setLocations(data.map(location => ({title: location.name, id: location.id, value: location.id})))
   }
 
   useEffect(() => {
-    fetch('/getlocations')
+    fetch('/locations')
   .then(response => response.json())
   .then(data => setLocationData(data));
   },[]);
 
   const getRoutes = async (sort) => {
-    console.log(document.getElementById("from"))
+    console.log(locations)
     
     const body = JSON.stringify({
       sort: sort,
@@ -39,7 +39,7 @@ export default function PlanRoute() {
       date: selectedDate,
     })
     console.log(body)
-    const rawResponse = await fetch('/plan-route', {
+    const rawResponse = await fetch('/planroute', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

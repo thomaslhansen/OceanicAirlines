@@ -27,16 +27,16 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+function createData(route, time, cost) {
+  return { route, time, cost};
 }
 
 const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
+  createData('Frozen yoghurt', 72,340),
+  createData('Ice cream sandwich', 86, 888),
+  createData('Eclair', 262, 999),
+  createData('Cupcake', 305, 1050),
+  createData('Gingerbread', 356, 1500)
 ];
 
 const useStyles = makeStyles({
@@ -53,23 +53,17 @@ export default function SearchTable() {
       <Table className={classes.table} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-            <StyledTableCell align="right">Calories</StyledTableCell>
-            <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+            <StyledTableCell>Route</StyledTableCell>
+            <StyledTableCell align="right">Duration</StyledTableCell>
+            <StyledTableCell align="right">Cost</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row) => (
             <StyledTableRow key={row.name}>
-              <StyledTableCell component="th" scope="row">
-                {row.name}
-              </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell>
+              <StyledTableCell>{row.route}</StyledTableCell>
+              <StyledTableCell align="right">{row.time} h</StyledTableCell>
+              <StyledTableCell align="right">{row.cost} $</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
