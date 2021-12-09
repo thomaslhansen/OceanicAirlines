@@ -21,6 +21,21 @@ namespace CESParcelDeliverySystem.BusinessLogic.RoutePlanner
             this._time = time;
             this._currentLocation = currentLocation;
         }
+        
+        public bool IsDominatedBy(double cost, double time)
+        {
+            if (_cost < cost)
+            {
+                return false;
+            } else if (_time < time)
+            {
+                return false;
+            } else if (_cost == cost && _time == time)
+            {
+                return false;
+            }
+            return true;
+        }
 
         public List<Edge> Route()
         {
