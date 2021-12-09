@@ -8,8 +8,8 @@ namespace CESParcelDeliverySystem.Models
     public class OrderType
     {
         public int Id { get; set; }
-        public Order Order { get; set; }
-        public Type Type { get; set; }
+        public int Order { get; set; }
+        public int Type { get; set; }
 
     }
 }

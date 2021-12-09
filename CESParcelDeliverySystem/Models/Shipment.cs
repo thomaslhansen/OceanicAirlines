@@ -8,10 +8,10 @@ namespace CESParcelDeliverySystem.Models
     public class Shipment
     {
         public int Id { get; set; }
-        public Order Order { get; set; }
-        public Location ToLocation { get; set; }
-        public Location FromLocation { get; set; }
-        public double Price { get; set; }
+        public int Order { get; set; }
+        public int ToLocation { get; set; }
+        public int FromLocation { get; set; }
+        public int Price { get; set; }
         public int Duration { get; set; }
     }
 }
