@@ -15,9 +15,9 @@ namespace CESParcelDeliverySystem.BusinessLogic.RoutePlanner
 
         public enum Type
         {
-            Plane,      // 0
-            Truck,      // 1
-            Ship        // 2
+            Plane = 0,      // fly
+            Truck = 1,      // truck
+            Ship = 2        // boat
         }
 
         public Edge(int v, int w, double cost, double time, Type type)
