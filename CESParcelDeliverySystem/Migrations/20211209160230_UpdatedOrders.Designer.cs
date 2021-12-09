@@ -4,14 +4,16 @@ using CESParcelDeliverySystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CESParcelDeliverySystem.Migrations
 {
     [DbContext(typeof(CesContext))]
-    partial class CesContextModelSnapshot : ModelSnapshot
+    [Migration("20211209160230_UpdatedOrders")]
+    partial class UpdatedOrders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -271,7 +273,7 @@ namespace CESParcelDeliverySystem.Migrations
                     b.Property<string>("ContentType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double?>("Fee")
+                    b.Property<double>("Fee")
                         .HasColumnType("float");
 
                     b.Property<bool>("IsActive")
