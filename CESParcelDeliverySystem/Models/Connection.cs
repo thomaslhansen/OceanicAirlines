@@ -10,6 +10,8 @@ namespace CESParcelDeliverySystem.Models
         public int Id { get; set; }
         public Location ToLocation { get; set; }
         public Location FromLocation { get; set; }
+        public int Moves { get; set; }
+        public string TransportationMode { get; set; }
         public bool IsActive { get; set; }
     }
 }
