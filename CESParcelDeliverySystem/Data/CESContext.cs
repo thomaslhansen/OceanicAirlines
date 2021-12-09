@@ -21,7 +21,10 @@ namespace CESParcelDeliverySystem.Data
         public virtual DbSet<Models.Type> Type { get; set; }
         public virtual DbSet<User> User { get; set; }
 
+        public CesContext()
+        {
 
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

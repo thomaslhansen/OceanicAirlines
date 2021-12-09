@@ -23,14 +23,7 @@ namespace CESParcelDeliverySystem.Controllers
         [HttpGet]
         public IEnumerable<Location> Get()
         {
-            return Enumerable.Range(1, 5).Select(index => new Location
-            {
-                    LocationName = "teste",
-                    LocationId = 3,
-                    status = true
-
-            })
-                .ToArray();
+            return Location.GetLocationName();
         }
     }
 }
