@@ -8,8 +8,10 @@ namespace CESParcelDeliverySystem.Models
     public class Pricing
     {
         public int Id { get; set; }
-        public Category Category { get; set; }
-        public double Weight { get; set; }
-        public double Price { get; set; }
+        public string SizeCategory { get; set; }
+        public string WeightCategory { get; set; }
+        public int Price { get; set; }
+        public int LatestShippingPrice { get; set; }
+        public int LatestTruckingPrice { get; set; }
     }
 }
