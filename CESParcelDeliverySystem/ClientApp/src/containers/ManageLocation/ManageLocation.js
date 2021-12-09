@@ -12,17 +12,21 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 
 export default function ManageLocation() {
 
-var prices
+const [rows, setRows] = useState([]);
 
-const updatePrice = async () => {
-  console.log(prices)
-  const body = JSON.stringify({ id: 1, sizeCategory: "A", weightCategory: 'Light', currentPrice: 40, latestShippingPrice: 0, latestTruckingPrice: 0 })
+const updateLocation = async (row) => {
+  row.status = document.getElementById("locationId" + row.id).value
+
+  const body = JSON.stringify(row)
   console.log(body)
-  const rawResponse = await fetch('/prices', {
+  const rawResponse = await fetch('/locations', {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -30,20 +34,14 @@ const updatePrice = async () => {
     },
     body: body
   });
-  const content = await rawResponse.json();
-  fetch('/price')
-.then(response => response.status)
-.then(status => console.log(status));
+  console.log(await rawResponse.status)
 }
 
 
   useEffect(() => {
-    fetch('/prices')
+    fetch('/locations')
   .then(response => response.json())
-  .then(data => prices = {
-
-
-  });
+  .then(data =>setRows(data));
   },[]);
 
 
@@ -68,13 +66,7 @@ const updatePrice = async () => {
   function createData(route, time, cost) {
     return { route, time, cost};
   }
-  const rows = [
-    createData('Frozen yoghurt', 72,340),
-    createData('Ice cream sandwich', 86, 888),
-    createData('Eclair', 262, 999),
-    createData('Cupcake', 305, 1050),
-    createData('Gingerbread', 356, 1500)
-  ];
+
   const useStyles = makeStyles({
     table: {
       minWidth: 700,
@@ -95,10 +87,19 @@ const updatePrice = async () => {
         <TableBody>
           {rows.map((row) => (
             <StyledTableRow key={row.name}>
-              <StyledTableCell>{row.route}</StyledTableCell>
-              <StyledTableCell align="right">{row.time} h</StyledTableCell>
+              <StyledTableCell>{row.name}</StyledTableCell>
               <StyledTableCell align="right">
-                <Button color='primary' variant='contained'>
+                <Select
+          labelId="demo-simple-select-label"
+          id={"locationId" + row.id}
+          defaultValue={row.status}
+        >
+          <MenuItem value={true}>Active</MenuItem>
+          <MenuItem value={false}>Inactive</MenuItem>
+        </Select>
+        </StyledTableCell>
+              <StyledTableCell align="right">
+                <Button color='primary' variant='contained' onClick={() => { updateLocation(row)}}>
                   Save
                 </Button>
                 </StyledTableCell>

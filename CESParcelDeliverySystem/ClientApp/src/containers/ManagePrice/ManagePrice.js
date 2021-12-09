@@ -17,8 +17,6 @@ import TextField from '@material-ui/core/TextField';
 
 export default function ManageLocation() {
 
-var prices
-
 const [rows, setRows] = useState([]);
 
 const updatePrice = async (row) => {
@@ -26,7 +24,7 @@ const updatePrice = async (row) => {
   row.price1.currentPrice = document.getElementById("priceId"+row.price1.id).value
   row.price2.currentPrice = document.getElementById("priceId"+row.price2.id).value
   row.price3.currentPrice = document.getElementById("priceId"+row.price3.id).value
-
+  
   console.log("priceId"+row.price1.id)
   console.log("priceId"+row.price2.id)
   console.log("priceId"+row.price3.id)

@@ -14,11 +14,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import Box from '@material-ui/core/Box';
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 
-
 export default function SearchBox(props) {
-
-  
-
 
   return (
       <Card>
@@ -106,7 +102,7 @@ export default function SearchBox(props) {
                   <Button onClick={() => { props.getRoutes("fastest")}}>
                     Search fastest route
                   </Button>
-                  <Button onClick={() => { props.getRoutes("cheapest")}}>
+                  <Button onClick={() => { props.setRoute("cheapest")}}>
                     Search cheapest route
                   </Button>
                 </ButtonGroup>

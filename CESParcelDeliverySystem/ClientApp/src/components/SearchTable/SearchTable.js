@@ -7,6 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 
 
 const StyledTableCell = withStyles((theme) => ({
@@ -45,7 +46,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function SearchTable() {
+export default function SearchTable(props) {
   const classes = useStyles();
 
   return (
@@ -56,14 +57,20 @@ export default function SearchTable() {
             <StyledTableCell>Route</StyledTableCell>
             <StyledTableCell align="right">Duration</StyledTableCell>
             <StyledTableCell align="right">Cost</StyledTableCell>
+            <StyledTableCell align="right"></StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
-              <StyledTableCell>{row.route}</StyledTableCell>
-              <StyledTableCell align="right">{row.time} h</StyledTableCell>
-              <StyledTableCell align="right">{row.cost} $</StyledTableCell>
+          {props.routes.map((route) => (
+            <StyledTableRow key={route.id}>
+              <StyledTableCell>{route.id}</StyledTableCell>
+              <StyledTableCell align="right">{route.time} h</StyledTableCell>
+              <StyledTableCell align="right">{route.cost} $</StyledTableCell>
+              <StyledTableCell align="right">                  
+                <Button onClick={() => { props.selectRoute(route)}}>
+                      Select Route
+                </Button>
+                </StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

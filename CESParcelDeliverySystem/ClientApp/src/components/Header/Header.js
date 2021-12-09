@@ -35,23 +35,23 @@ const Header = props => {
           className={classes.title}
         >
         </Typography>
-        <Link to="/plan-a-route">
-        <Button color="secondary">
+        <Link to="/plan-a-route" style={{ textDecoration: 'none' }}>
+        <Button variant='contained' color="primary">
           Plan Route
         </Button>
         </Link>
-        <Link to="/manage-location">
-        <Button color="inherit">
+        <Link to="/manage-location" style={{ textDecoration: 'none' }}>
+        <Button variant='contained' color="primary">
           Manage Location
         </Button>
         </Link>
-        <Link to="/manage-price">
-        <Button color="inherit">
+        <Link to="/manage-price" style={{ textDecoration: 'none' }}>
+        <Button variant='contained' color="primary">
           Manage Price
         </Button>
         </Link>
-        <Link to="/export-data">
-        <Button color="inherit">
+        <Link to="/export-data" style={{ textDecoration: 'none' }}>
+        <Button variant='contained' color="primary">
           Export Data
         </Button>
         </Link>
