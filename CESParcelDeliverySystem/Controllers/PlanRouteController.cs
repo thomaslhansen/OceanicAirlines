@@ -80,8 +80,8 @@ namespace CESParcelDeliverySystem.Controllers
             }
 
             // Calculation to be performed here. 
-            var calc = new Planner(nodes, edges);
-            var result = calc.Plan( fromId, toId);
+            var calc = new Planner(nodes, edges, fromId, toId);
+            var result = calc.Plan();
 
             List<RouteInformationDTO> responseData = new Calculator().GetOptimalRoutes();
 
@@ -148,7 +148,14 @@ namespace CESParcelDeliverySystem.Controllers
                 var toNodes = context.Connection.Select(f => f.ToLocation).Distinct().ToList();
                 var fromNodes = context.Connection.Select(f => f.FromLocation).Distinct().ToList();
                 var finalNodes = toNodes.Concat(fromNodes);
-                int nodes = finalNodes.Distinct().Count();
+                var nodes = finalNodes.Distinct().ToList();
+
+                Dictionary<int, int> mappingDict = new Dictionary<int, int>();
+
+                for (var i = 0; i < nodes.Count; i++)
+                {
+                    mappingDict[nodes[i]] = i;
+                }
 
                 var network = context.Connection.ToList();
 
@@ -159,20 +166,18 @@ namespace CESParcelDeliverySystem.Controllers
                     string _type = edge.TransportationMode.ToLower();
                     EdgeDTO edgeDto = new EdgeDTO
                     {
-                        Origin = edge.FromLocation,
-                        Destination = edge.ToLocation,
+                        Origin = mappingDict[edge.FromLocation],
+                        Destination = mappingDict[edge.ToLocation],
                         PriceInDollars = Convert.ToInt32(Convert.ToDouble(edge.Moves) * basePrices[_type]),
                         DurationInHours = edge.Moves * baseDurations[_type],
                         TransportMode = _type,
                     };
-
                     edges.Add(edgeDto);
-                    
                 }
 
                 // Calculation to be performed here. 
-                var calc = new Planner(nodes, edges);
-                var result = calc.Plan(fromId, toId);
+                var calc = new Planner(nodes.Count, edges, fromId, toId);
+                var result = calc.Plan();
 
                 List<RouteInformationDTO> responseData = new Calculator().GetOptimalRoutes();
 
