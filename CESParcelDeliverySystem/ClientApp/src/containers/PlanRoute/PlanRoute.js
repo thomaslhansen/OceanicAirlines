@@ -52,16 +52,16 @@ export default function PlanRoute() {
       type: document.getElementById("type").value,
       date: selectedDate,
     })
-    console.log(body)
-    const rawResponse = await fetch('/planroute', {
+    fetch('/planroute', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
       body: body
-    });
-    const content = await rawResponse.json();
+    }).then(response => response.json())
+    .then(data => setRoutes(data.payload.routeInformation));
+
   }
 
   return (
@@ -72,13 +72,13 @@ export default function PlanRoute() {
     justifyContent="center"
     style={{ minHeight: '100vh' }}>
     <Grid item style={{ minWidth: '70vw' }}>
-    {typeof selectedRoute === 'undefined'
+    {typeof selectedRoute !== 'undefined'
     ? <SearchTable routes={routes} selectRoute={selectRoute}/>
     : <SearchBox locations={locations} selectedDate={selectedDate} handleDateChange={handleDateChange} getRoutes={getRoutes}/>
     }
     </Grid>
     <Grid item style={{ minWidth: '90vw' }}>
-    {typeof selectedRoute === 'undefined'
+    {typeof selectedRoute !== 'undefined'
     ? <ConfirmRoute/>
     :<SearchTable routes={routes} selectRoute={selectRoute}/>
     }
