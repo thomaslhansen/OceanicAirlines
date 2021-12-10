@@ -63,11 +63,11 @@ export default function SearchTable(props) {
         <TableBody>
           {props.routes.map((route) => (
             <StyledTableRow key={route.id}>
-              <StyledTableCell>{route.id}</StyledTableCell>
-              <StyledTableCell align="right">{route.time} h</StyledTableCell>
-              <StyledTableCell align="right">{route.cost} $</StyledTableCell>
+              <StyledTableCell align="right">To be done</StyledTableCell>
+              <StyledTableCell align="right">{route.durationInHours} h</StyledTableCell>
+              <StyledTableCell align="right">{route.priceInDollars} $</StyledTableCell>
               <StyledTableCell align="right">                  
-                <Button onClick={() => { props.selectRoute(route)}}>
+                <Button variant='contained' color='primary' onClick={() => { props.selectRoute(route)}}>
                       Select Route
                 </Button>
                 </StyledTableCell>

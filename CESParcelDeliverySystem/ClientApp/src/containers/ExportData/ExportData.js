@@ -28,7 +28,7 @@ export default function SearchBox(props) {
     const rawResponse = await fetch('/ExportData', {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
+        'Accept': 'text/csv',
         'Content-Type': 'application/json'
       },
       body: body

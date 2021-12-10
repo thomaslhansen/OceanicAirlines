@@ -102,7 +102,7 @@ export default function SearchBox(props) {
                   <Button onClick={() => { props.getRoutes("fastest")}}>
                     Search fastest route
                   </Button>
-                  <Button onClick={() => { props.setRoute("cheapest")}}>
+                  <Button onClick={() => { props.getRoutes("cheapest")}}>
                     Search cheapest route
                   </Button>
                 </ButtonGroup>
