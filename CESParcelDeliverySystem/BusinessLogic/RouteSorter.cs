@@ -22,9 +22,16 @@ namespace CESParcelDeliverySystem.BusinessLogic
             var output = new List<EdgeResponseDTO>();
             for (var i = 0; i < EdgeResponseDtos.Count; i++)
             {
-                var obj = EdgeResponseDtos.First(e => e.Origin == nextSearch);
-                output.Add(obj);
-                nextSearch = obj.Destination;
+                if (EdgeResponseDtos[i].Origin != nextSearch)
+                {
+                    var endLocation = EdgeResponseDtos[i].Origin;
+                    EdgeResponseDtos[i].Origin = nextSearch;
+                    EdgeResponseDtos[i].Destination = endLocation;
+                }
+                output.Add(EdgeResponseDtos[i]);
+                nextSearch = EdgeResponseDtos[i].Destination;
+                //var obj = EdgeResponseDtos.First(e => e.Origin == nextSearch);
+
             }
             return output;
         }
