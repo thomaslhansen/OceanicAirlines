@@ -34,6 +34,7 @@ namespace CESParcelDeliverySystem.Controllers
                     return BadRequest();
 
                 CesContext context = new CesContext();
+                var network = context.Connection.ToList();
                 var ss = shipmentRequest;
 
                 int toId = context.Location.First(c => c.Name == shipmentRequest.To).Id;
@@ -63,10 +64,34 @@ namespace CESParcelDeliverySystem.Controllers
                 baseDurations["fly"] = 8;
 
                 var multiplier = context.Type.FirstOrDefault(m => m.ContentType.ToLower() == shipmentRequest.Type.ToLower());
-                
                 if (multiplier != null)
                 {
-                    basePrices["fly"] = basePrices["fly"] * Convert.ToDouble(multiplier.Fee);
+                    if (multiplier.Fee == null)
+                    {
+                        network = network.Where(n => n.TransportationMode.ToLower() != "fly").ToList();
+                    }
+                    else
+                    {
+                        basePrices["fly"] = basePrices["fly"] * (Convert.ToDouble(multiplier.Fee) / 100 + 1);
+                    }
+                }
+
+                // Handling trucking edgecases
+                if (shipmentRequest.Type.ToLower() == "recorded delivery")
+                {
+                    basePrices["truck"] = basePrices["truck"] + 10;
+                }
+                if (shipmentRequest.Type.ToLower() == "live animals")
+                {
+                    basePrices["truck"] = basePrices["truck"] * 1.5;
+                }
+                if (shipmentRequest.Type.ToLower() == "cautious parcels")
+                {
+                    basePrices["truck"] = basePrices["truck"] * 1.75;
+                }
+                if (shipmentRequest.Type.ToLower() == "refrigerated goods")
+                {
+                    basePrices["truck"] = basePrices["truck"] * 1.1;
                 }
 
                 // Set up network
@@ -83,8 +108,6 @@ namespace CESParcelDeliverySystem.Controllers
                     mappingDict[nodes[i]] = i;
                     inverseMappingDict[i] = nodes[i];
                 }
-
-                var network = context.Connection.ToList();
 
                 List<EdgeDTO> edges = new List<EdgeDTO>();
 
@@ -107,6 +130,7 @@ namespace CESParcelDeliverySystem.Controllers
                 var result = calc.Plan();
 
                 Dictionary<string, List<EdgeResponseDTO>> final_ = new Dictionary<string, List<EdgeResponseDTO>>();
+                var outputList = new List<SolutionDTO>();
 
                 foreach (SearchNode n in result)
                 {
@@ -123,20 +147,35 @@ namespace CESParcelDeliverySystem.Controllers
                             Destination = context.Location.First(c => c.Id == inverseMappingDict[e.Target(e.Source())]).Name,
                             TransportMode = e.GetType().ToString()
                         };
-
                         final_[g.ToString()].Add(newd);
                     }
+                    SolutionDTO solution = new SolutionDTO
+                        {
+                            Solution = final_[g.ToString()],
+                            PriceInDollars = Convert.ToInt32(n.Cost()),
+                            DurationInHours = Convert.ToInt32(n.Time())
+                        };
+                    outputList.Add(solution);
                 }
 
-
-                var outputList = new List<List<EdgeResponseDTO>>();
-
-                foreach (var elem in final_)
+                foreach (var elem in outputList)
                 {
-                    var allDtos = elem.Value;
+                    var allDtos = elem.Solution;
                     var sorter = new RouteSorter(allDtos, shipmentRequest.From);
-                    outputList.Add(sorter.ExecuteImplementation());
+                    elem.Solution = sorter.ExecuteImplementation();
                 }
+
+                shipmentRequest.Sort = "cheapest";
+
+                if (shipmentRequest.Sort.ToLower() == "fastest")
+                {
+                    outputList = outputList.OrderByDescending(o => o.PriceInDollars).ToList();
+                }
+                if (shipmentRequest.Sort.ToLower() == "cheapest")
+                {
+                    outputList = outputList.OrderByDescending(o => o.DurationInHours).ToList();
+                }
+                
 
 
                 var response = new ResponseDTO
