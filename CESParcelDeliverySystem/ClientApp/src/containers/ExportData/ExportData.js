@@ -25,16 +25,23 @@ export default function SearchBox(props) {
       to: selectedToDate,
     })
     console.log(body)
-    const rawResponse = await fetch('/ExportData', {
+    const rawResponse = fetch('/ExportData', {
       method: 'POST',
       headers: {
         'Accept': 'text/csv',
         'Content-Type': 'application/json'
       },
       body: body
-    });
-    const content = await rawResponse.json();
-  }
+    }).then(response => response.blob())
+    .then(blob => {
+        var url = window.URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = "DataExport.csv";
+        document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+        a.click();    
+        a.remove();  //afterwards we remove the element again     ;
+  })}
 
   return (
       <Card>
