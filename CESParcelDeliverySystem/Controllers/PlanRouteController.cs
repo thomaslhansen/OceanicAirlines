@@ -127,11 +127,19 @@ namespace CESParcelDeliverySystem.Controllers
                 }
 
 
+                var outputList = new List<List<EdgeDTO>>();
+
+                foreach (var elem in final_)
+                {
+                    outputList.Add(elem.Value);
+                }
+
+
                 var response = new ResponseDTO
                 {
                     Success = true,
                     StatusCode = 200,
-                    Payload = final_,
+                    Payload = outputList,
                     RoutesAreSupported = true,
                     Message = "200 - OK"
                 };
