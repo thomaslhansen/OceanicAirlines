@@ -26,16 +26,16 @@ export default function SearchBox(props) {
           </Typography>
             <List>
               <ListItem>
-                <TextField id="weight" label="Weight" type="number"/>
+                <TextField id="weight" label="Weight" type="number" onChange={props.changeWeight} value={props.weight}/>
               </ListItem>
               <ListItem>
-                <TextField id="height" label="Height" type="number"/>
+                <TextField id="height" label="Height" type="number" onChange={props.changeHeight} value={props.height}/>
               </ListItem>
               <ListItem>
-                <TextField id="length" label="Length" type="number"/>
+                <TextField id="length" label="Length" type="number" onChange={props.changeLength} value={props.length}/>
               </ListItem>
               <ListItem>
-                <TextField id="width" label="Width" type="number"/>
+                <TextField id="width" label="Width" type="number" onChange={props.changeWidth} value={props.width}/>
               </ListItem>
               <ListItem>
               <Autocomplete
@@ -43,6 +43,7 @@ export default function SearchBox(props) {
                 options={[{title: 'Recorded Delivery'},{title: 'Weapons'},{title: 'Cautios parcel'},{title: 'Refigerated goods'}]}
                 getOptionLabel={(option) => option.title}
                 style={{ width: 300 }}
+                onChange={props.changeType}
                 renderInput={(params) => <TextField {...params} label="Type" variant="outlined" />}
               />
               </ListItem>
@@ -61,6 +62,7 @@ export default function SearchBox(props) {
                   options={props.locations}
                   getOptionLabel={(option) => option.title}
                   style={{ width: 300 }}
+                  onChange={props.changeFrom}
                   renderInput={(params) => <TextField {...params} label="From" variant="outlined" />}
                 />
               </Grid>
@@ -70,6 +72,7 @@ export default function SearchBox(props) {
                   options={props.locations}
                   getOptionLabel={(option) => option.title}
                   style={{ width: 300 }}
+                  onChange={props.changeTo}
                   renderInput={(params) => <TextField {...params} label="To" variant="outlined" />}
                 />
               </Grid>
