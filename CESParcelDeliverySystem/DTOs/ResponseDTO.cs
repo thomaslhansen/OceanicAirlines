@@ -12,7 +12,7 @@ namespace CESParcelDeliverySystem.DTOs
 
         public int StatusCode { get; set; }
 
-        public Dictionary<string, List<EdgeDTO>> Payload { get; set; }
+        public List<List<EdgeDTO>> Payload { get; set; }
 
         public Boolean RoutesAreSupported { get; set; }
 
