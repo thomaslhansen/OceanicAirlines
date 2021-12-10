@@ -3,7 +3,6 @@ import { withStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
 
 import Header from "../components/Header";
-import Sidebar from "../components/Sidebar";
 
 const drawerWidth = 240;
 
@@ -55,7 +54,6 @@ class MainLayout extends Component {
             {children}
           </main>
         </div>
-        <Sidebar open={this.state.open} drawerWidth={drawerWidth} />
       </Fragment>
     );
   }

@@ -26,7 +26,7 @@ const styles = theme => ({
 const Header = props => {
   const { classes, handleToggleDrawer } = props;
   return (
-    <AppBar position="fixed">
+    <AppBar position="fixed" color='secondary'>
       <Toolbar disableGutters={true} classes={{ root: classes.toolbarRoot }}>
         <Typography
           variant="h6"

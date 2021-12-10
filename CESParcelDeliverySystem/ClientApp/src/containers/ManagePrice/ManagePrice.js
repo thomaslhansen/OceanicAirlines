@@ -83,8 +83,8 @@ const updatePrice = async (row) => {
 
   const StyledTableCell = withStyles((theme) => ({
     head: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
+      backgroundColor: '#ffaf00',
+      color: '#38383a',
     },
     body: {
       fontSize: 14,
