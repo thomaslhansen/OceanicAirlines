@@ -25,81 +25,6 @@ namespace CESParcelDeliverySystem.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
-        public ResponseDTO Get()
-        {
-            CesContext context = new CesContext();
-            context.ChangeTracker.LazyLoadingEnabled = true;
-
-            // Set up start - stop points
-            int toId = 26;
-            int fromId = 11;
-
-
-            // Get pricing info
-            var parcelMapper = new ParcelMapper(); // Use this
-            string sizeCategory = "A";
-            string weightCategory = "light";
-
-            var x = context.Pricing.First(p => p.SizeCategory == sizeCategory && p.WeightCategory == weightCategory);
-
-            Dictionary<string, double> basePrices = new Dictionary<string, double>();
-            basePrices["shipping"] = Convert.ToDouble(x.LatestShippingPrice);
-            basePrices["trucking"] = Convert.ToDouble(x.LatestTruckingPrice);
-            basePrices["fly"] = Convert.ToDouble(x.Price);
-
-            Dictionary<string, int> baseDurations = new Dictionary<string, int>();
-            baseDurations["shipping"] = 12;
-            baseDurations["trucking"] = 4;
-            baseDurations["fly"] = 8;
-
-            double? multiplier = context.Type.First(m => m.ContentType == "Weapons").Fee;
-
-            if (multiplier != null)
-            {
-                basePrices["fly"] = basePrices["fly"] * Convert.ToDouble(multiplier);
-            }
-
-            // Set up network
-            //int nodes = context.Connection.Where(c => c.TransportationMode == "Fly").Select(f => f.ToLocation).Distinct().Count();
-            var network = context.Connection.Where(c => c.TransportationMode == "Fly");
-            int nodes = 26;
-
-            List<EdgeDTO> edges = new List<EdgeDTO>();
-
-            foreach (var edge in network)
-            {
-                string _type = edge.TransportationMode.ToLower();
-                EdgeDTO edgeDto = new EdgeDTO();
-                edgeDto.Destination = edge.FromLocation;
-                edgeDto.Destination = edge.ToLocation;
-                edgeDto.PriceInDollars = Convert.ToInt32(Convert.ToDouble(edge.Moves) * basePrices[_type]);
-                edgeDto.DurationInHours = edge.Moves * baseDurations[_type];
-                edgeDto.TransportMode = _type;
-                edges.Add(edgeDto);
-            }
-
-            // Calculation to be performed here. 
-            var calc = new Planner(nodes, edges, fromId, toId);
-            var result = calc.Plan();
-
-            List<RouteInformationDTO> responseData = new Calculator().GetOptimalRoutes();
-
-            var testPayload = new Dictionary<string, List<RouteInformationDTO>>();
-            testPayload["routeInformation"] = responseData;
-
-            var response = new ResponseDTO
-            {
-                Success = true,
-                StatusCode = 200,
-                Payload = testPayload,
-                RoutesAreSupported = true,
-                Message = "200 - OK"
-            };
-
-            return response;
-        }
-
         [HttpPost]
         public async Task<ActionResult<ResponseDTO>> Update(ShipmentRequestDTO shipmentRequest)
         {
@@ -179,23 +104,47 @@ namespace CESParcelDeliverySystem.Controllers
                 var calc = new Planner(nodes.Count, edges, fromId, toId);
                 var result = calc.Plan();
 
-                List<RouteInformationDTO> responseData = new Calculator().GetOptimalRoutes();
+                Dictionary<string, List<EdgeDTO>> final_ = new Dictionary<string, List<EdgeDTO>>();
 
-                var testPayload = new Dictionary<string, List<RouteInformationDTO>>();
-                testPayload["routeInformation"] = responseData;
+                foreach (SearchNode n in result)
+                {
+                    Guid g = Guid.NewGuid();
+
+                    final_[g.ToString()] = new List<EdgeDTO>();
+                    foreach (var e in n.Route())
+                    {
+                        EdgeDTO newd = new EdgeDTO
+                        {
+                            PriceInDollars = Convert.ToInt32(e.Cost()),
+                            DurationInHours = Convert.ToInt32(e.Time()),
+                            Origin = e.Source(),
+                            Destination = e.Target(e.Source()),
+                            TransportMode = e.GetType().ToString()
+                        };
+
+                        final_[g.ToString()].Add(newd);
+                    }
+                }
+
+
+                var outputList = new List<List<EdgeDTO>>();
+
+                foreach (var elem in final_)
+                {
+                    outputList.Add(elem.Value);
+                }
+
 
                 var response = new ResponseDTO
                 {
                     Success = true,
                     StatusCode = 200,
-                    Payload = testPayload,
+                    Payload = outputList,
                     RoutesAreSupported = true,
                     Message = "200 - OK"
                 };
 
                 return response;
-
-                return Ok();
             }
             catch (Exception)
             {
