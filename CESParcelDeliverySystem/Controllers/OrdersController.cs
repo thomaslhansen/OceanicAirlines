@@ -27,7 +27,7 @@ namespace CESParcelDeliverySystem.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Order>> Create(Models.Order order)
+        public async Task<ActionResult<Order>> Create(Order order)
         {
             try
             {

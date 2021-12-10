@@ -11,8 +11,8 @@ namespace CESParcelDeliverySystem.APIs
     {
         public static CesContext Context = new CesContext();
         public int Id { get; set; }
-        public Models.Location ToLocation { get; set; }
-        public Models.Location FromLocation { get; set; }
+        public string ToLocation { get; set; }
+        public string FromLocation { get; set; }
         public DateTime Date { get; set; }
         public int Price { get; set; }
         public int Duration { get; set; }
@@ -23,8 +23,8 @@ namespace CESParcelDeliverySystem.APIs
         public string CostumerEmail { get; set; }
         public bool IsCancelled { get; set; }
 
-        public Order(int id, string CostumerName, string CostumerEmail, Models.Location ToLocation,
-            Models.Location FromLocation, DateTime date,
+        public Order(int id, string CostumerName, string CostumerEmail, string ToLocation,
+            string FromLocation, DateTime date,
             int price,
             int duration, int height, int length, int width, bool isCancelled)
         {
@@ -50,7 +50,7 @@ namespace CESParcelDeliverySystem.APIs
             {
                 var ToLocation = Context.Location.FirstOrDefault((x => x.Id == order.ToLocation));
                 var FromLocation = Context.Location.FirstOrDefault((x => x.Id == order.FromLocation));
-                result.Add(new Order(order.Id, order.CostumerName, order.CostumerEmail, ToLocation, FromLocation,
+                result.Add(new Order(order.Id, order.CostumerName, order.CostumerEmail, ToLocation.Name, FromLocation.Name,
                     order.Date,
                     order.Price, order.Duration,
                     order.Height, order.Length, order.Width, order.IsCancelled));
@@ -59,7 +59,7 @@ namespace CESParcelDeliverySystem.APIs
             return result;
         }
 
-        public static bool CreateOrder(Models.Order order)
+        public static bool CreateOrder(Order order)
         {
             if (order != null)
             {
@@ -70,8 +70,8 @@ namespace CESParcelDeliverySystem.APIs
                     Price = order.Price,
                     Date = order.Date,
                     Duration = order.Duration,
-                    FromLocation = order.FromLocation,
-                    ToLocation = order.ToLocation,
+                    FromLocation = Context.Location.FirstOrDefault(x => x.Name.Equals(order.FromLocation)).Id,
+                    ToLocation = Context.Location.FirstOrDefault(x => x.Name.Equals(order.ToLocation)).Id,
                     Height = order.Height,
                     Length = order.Length,
                     Width = order.Width,
