@@ -58,8 +58,13 @@ const themeConfig = {
     useNextVariants: true,
   },
   palette: {
-    primary: indigo,
-    secondary: green,
+    primary: {
+      main: '#ffaf00'
+    },
+    secondary: {
+      main: '#38383a'
+    },
+    
     error: red,
     // Used by `getContrastText()` to maximize the contrast between the background and
     // the text.

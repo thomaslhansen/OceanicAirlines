@@ -60,7 +60,7 @@ export default function PlanRoute() {
       },
       body: body
     }).then(response => response.json())
-    .then(data => setRoutes(data.payload.routeInformation));
+    .then(data => console.log(data.payload));
 
   }
 

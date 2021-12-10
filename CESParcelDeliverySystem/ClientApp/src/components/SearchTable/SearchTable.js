@@ -12,8 +12,8 @@ import Button from '@material-ui/core/Button';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
+    backgroundColor: '#ffaf00',
+    color: '#38383a',
   },
   body: {
     fontSize: 14,
@@ -32,13 +32,6 @@ function createData(route, time, cost) {
   return { route, time, cost};
 }
 
-const rows = [
-  createData('Frozen yoghurt', 72,340),
-  createData('Ice cream sandwich', 86, 888),
-  createData('Eclair', 262, 999),
-  createData('Cupcake', 305, 1050),
-  createData('Gingerbread', 356, 1500)
-];
 
 const useStyles = makeStyles({
   table: {
@@ -54,7 +47,7 @@ export default function SearchTable(props) {
       <Table className={classes.table} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Route</StyledTableCell>
+            <StyledTableCell >Route</StyledTableCell>
             <StyledTableCell align="right">Duration</StyledTableCell>
             <StyledTableCell align="right">Cost</StyledTableCell>
             <StyledTableCell align="right"></StyledTableCell>
