@@ -40,7 +40,7 @@ export default function PlanRoute() {
       customerEmail: email
     })
     console.log(body)
-    fetch('/order', {
+    fetch('/orders', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
