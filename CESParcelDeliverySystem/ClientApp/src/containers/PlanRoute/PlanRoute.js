@@ -16,21 +16,14 @@ export default function PlanRoute() {
   const [lenght, setLength] = useState(0);
   const [width, setWidth] = useState(0);
   const [type, setType] = useState(0);
+  const [selectedRoute, setSelectedRoute] = useState();
 
   const selectRoute = (route) => {
-    const info = JSON.stringify({
-      from: document.getElementById("from").value,
-      to: document.getElementById("to").value,
-      weight: document.getElementById("weight").value,
-      height: document.getElementById("height").value,
-      lenght: document.getElementById("length").value,
-      width: document.getElementById("width").value,
-      type: document.getElementById("type").value,
-      route: selectedDate,
-
-    })
+    setSelectedRoute(route)
+    }
+  const confirmRoute = () => {
+    setSelectedRoute(null)
   }
-
   const changeFrom = (event,values) => {
     console.log(event)
     setFrom(values.title);
@@ -40,7 +33,7 @@ export default function PlanRoute() {
     setTo(values.title);
   };
   const changeWeight = (event) => {
-    console.log("Changeweight " +event.target.value)
+    console.log("Changeweight " + event.target.value)
     setWeight(event.target.value);
   };
   const changeHeight = (event) => {
