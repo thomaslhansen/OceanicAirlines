@@ -23,8 +23,8 @@ export default function ManageLocation() {
 const [rows, setRows] = useState([]);
 
 const updateLocation = async (row) => {
-  row.status = document.getElementById("locationId" + row.id).value
-
+  let status = document.getElementById("locationId" + row.id).textContent
+  row.status = status === "Active" ? true : false
   const body = JSON.stringify(row)
   console.log(body)
   const rawResponse = await fetch('/locations', {
@@ -38,7 +38,9 @@ const updateLocation = async (row) => {
   console.log(await rawResponse.status)
 }
 
+const handleStatusChange = () => {
 
+}
   useEffect(() => {
     fetch('/locations')
   .then(response => response.json())
@@ -99,6 +101,7 @@ const updateLocation = async (row) => {
           labelId="demo-simple-select-label"
           id={"locationId" + row.id}
           defaultValue={row.status}
+          onChange={handleStatusChange}
         >
           <MenuItem value={true}>Active</MenuItem>
           <MenuItem value={false}>Inactive</MenuItem>
