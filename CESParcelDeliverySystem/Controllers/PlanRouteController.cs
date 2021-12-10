@@ -62,7 +62,7 @@ namespace CESParcelDeliverySystem.Controllers
                 baseDurations["truck"] = 4;
                 baseDurations["fly"] = 8;
 
-                var multiplier = context.Type.FirstOrDefault(m => m.ContentType == shipmentRequest.Type);
+                var multiplier = context.Type.FirstOrDefault(m => m.ContentType.ToLower() == shipmentRequest.Type.ToLower());
                 
                 if (multiplier != null)
                 {
@@ -76,10 +76,12 @@ namespace CESParcelDeliverySystem.Controllers
                 var nodes = finalNodes.Distinct().ToList();
 
                 Dictionary<int, int> mappingDict = new Dictionary<int, int>();
+                Dictionary<int, int> inverseMappingDict = new Dictionary<int, int>();
 
                 for (var i = 0; i < nodes.Count; i++)
                 {
                     mappingDict[nodes[i]] = i;
+                    inverseMappingDict[i] = nodes[i];
                 }
 
                 var network = context.Connection.ToList();
@@ -101,24 +103,24 @@ namespace CESParcelDeliverySystem.Controllers
                 }
 
                 // Calculation to be performed here. 
-                var calc = new Planner(nodes.Count, edges, fromId, toId);
+                var calc = new Planner(nodes.Count, edges, mappingDict[fromId], mappingDict[toId]);
                 var result = calc.Plan();
 
-                Dictionary<string, List<EdgeDTO>> final_ = new Dictionary<string, List<EdgeDTO>>();
+                Dictionary<string, List<EdgeResponseDTO>> final_ = new Dictionary<string, List<EdgeResponseDTO>>();
 
                 foreach (SearchNode n in result)
                 {
                     Guid g = Guid.NewGuid();
 
-                    final_[g.ToString()] = new List<EdgeDTO>();
+                    final_[g.ToString()] = new List<EdgeResponseDTO>();
                     foreach (var e in n.Route())
                     {
-                        EdgeDTO newd = new EdgeDTO
+                        EdgeResponseDTO newd = new EdgeResponseDTO
                         {
                             PriceInDollars = Convert.ToInt32(e.Cost()),
                             DurationInHours = Convert.ToInt32(e.Time()),
-                            Origin = e.Source(),
-                            Destination = e.Target(e.Source()),
+                            Origin = context.Location.First(c => c.Id == inverseMappingDict[e.Source()]).Name,
+                            Destination = context.Location.First(c => c.Id == inverseMappingDict[e.Target(e.Source())]).Name,
                             TransportMode = e.GetType().ToString()
                         };
 
@@ -127,11 +129,13 @@ namespace CESParcelDeliverySystem.Controllers
                 }
 
 
-                var outputList = new List<List<EdgeDTO>>();
+                var outputList = new List<List<EdgeResponseDTO>>();
 
                 foreach (var elem in final_)
                 {
-                    outputList.Add(elem.Value);
+                    var allDtos = elem.Value;
+                    var sorter = new RouteSorter(allDtos, shipmentRequest.From);
+                    outputList.Add(sorter.ExecuteImplementation());
                 }
 
 
