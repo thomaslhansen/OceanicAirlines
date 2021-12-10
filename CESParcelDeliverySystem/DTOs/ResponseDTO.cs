@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CESParcelDeliverySystem.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -12,7 +13,7 @@ namespace CESParcelDeliverySystem.DTOs
 
         public int StatusCode { get; set; }
 
-        public List<List<EdgeResponseDTO>> Payload { get; set; }
+        public List<SolutionDTO> Payload { get; set; }
 
         public Boolean RoutesAreSupported { get; set; }
 
