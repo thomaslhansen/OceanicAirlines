@@ -16,9 +16,19 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 
 export default function SearchBox(props) {
 
+  const handleSubmit = (e, value) =>{
+    e.preventDefault();
+  }
+  const fun = (value) =>{
+    var form = document.getElementById('searchForm');
+    if(form.checkValidity()){
+      props.getRoutes(value)
+    }
+  }
   return (
       <Card>
         <CardContent>
+        <form id="searchForm" onSubmit={handleSubmit}>
         <Grid container spacing={5}>
           <Grid item xs={4}>
           <Typography variant="h6">
@@ -26,16 +36,36 @@ export default function SearchBox(props) {
           </Typography>
             <List>
               <ListItem>
-                <TextField id="weight" label="Weight" type="number" onChange={props.changeWeight} value={props.weight}/>
+                <TextField required id="weight" label="Weight" type="number" onChange={props.changeWeight} value={props.weight} 
+                    InputProps={{
+                      inputProps: { 
+                          max: 20, min: 0
+                      }
+                  }}/>
               </ListItem>
               <ListItem>
-                <TextField id="height" label="Height" type="number" onChange={props.changeHeight} value={props.height}/>
+                <TextField required id="height" label="Height" type="number" onChange={props.changeHeight} value={props.height}
+                    InputProps={{
+                      inputProps: { 
+                          max: 200, min: 0
+                      }
+                  }}/>
               </ListItem>
               <ListItem>
-                <TextField id="length" label="Length" type="number" onChange={props.changeLength} value={props.length}/>
+                <TextField required id="length" label="Length" type="number" onChange={props.changeLength} value={props.length}
+                    InputProps={{
+                      inputProps: { 
+                          max: 200, min: 0
+                      }
+                  }}/>
               </ListItem>
               <ListItem>
-                <TextField id="width" label="Width" type="number" onChange={props.changeWidth} value={props.width}/>
+                <TextField required id="width" label="Width" type="number" onChange={props.changeWidth} value={props.width}
+                    InputProps={{
+                      inputProps: { 
+                          max: 200, min: 0
+                      }
+                  }}/>
               </ListItem>
               <ListItem>
               <Autocomplete
@@ -44,7 +74,7 @@ export default function SearchBox(props) {
                 getOptionLabel={(option) => option.title}
                 style={{ width: 300 }}
                 onChange={props.changeType}
-                renderInput={(params) => <TextField {...params} label="Type" variant="outlined" />}
+                renderInput={(params) => <TextField required {...params} label="Type" variant="outlined" />}
               />
               </ListItem>
             </List>
@@ -63,7 +93,7 @@ export default function SearchBox(props) {
                   getOptionLabel={(option) => option.title}
                   style={{ width: 300 }}
                   onChange={props.changeFrom}
-                  renderInput={(params) => <TextField {...params} label="From" variant="outlined" />}
+                  renderInput={(params) => <TextField required {...params} label="From" variant="outlined" />}
                 />
               </Grid>
                 <Grid item xs={1}>
@@ -73,7 +103,7 @@ export default function SearchBox(props) {
                   getOptionLabel={(option) => option.title}
                   style={{ width: 300 }}
                   onChange={props.changeTo}
-                  renderInput={(params) => <TextField {...params} label="To" variant="outlined" />}
+                  renderInput={(params) => <TextField required {...params} label="To" variant="outlined" />}
                 />
               </Grid>
             </Grid>
@@ -87,6 +117,7 @@ export default function SearchBox(props) {
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
                   disableToolbar
+                  required
                   variant="inline"
                   format="MM/dd/yyyy"
                   margin="normal"
@@ -102,10 +133,10 @@ export default function SearchBox(props) {
               </Grid>
               <Box mt={20} mr={2}>
                 <ButtonGroup variant='contained' color="primary" aria-label="contained primary button group">
-                  <Button onClick={() => { props.getRoutes("fastest")}}>
+                  <Button type='submit' onClick={() => { fun("fastest")}} value="fastest">
                     Search fastest route
                   </Button>
-                  <Button onClick={() => { props.getRoutes("cheapest")}}>
+                  <Button type='submit' onClick={() => { fun("cheapest")}} value="cheapest">
                     Search cheapest route
                   </Button>
                 </ButtonGroup>
@@ -113,6 +144,7 @@ export default function SearchBox(props) {
               </Grid>
           </Grid>
         </Grid>
+        </form>
         </CardContent>
         <CardActions>
         </CardActions>

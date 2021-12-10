@@ -6,16 +6,16 @@ import ConfirmRoute from '../../components/ConfirmRoute/ConfirmRoute'
 
 export default function PlanRoute() {
 
-  const [selectedDate, setSelectedDate] = useState(new Date('2014-08-18T21:11:54'));
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [locations, setLocations] = useState();
   const [routes, setRoutes] = useState([]);
-  const [from, setFrom] = useState(0);
-  const [to, setTo] = useState(1);
-  const [weight, setWeight] = useState(0);
-  const [height, setHeight] = useState(0);
-  const [lenght, setLength] = useState(0);
-  const [width, setWidth] = useState(0);
-  const [type, setType] = useState(0);
+  const [from, setFrom] = useState();
+  const [to, setTo] = useState();
+  const [weight, setWeight] = useState();
+  const [height, setHeight] = useState();
+  const [lenght, setLength] = useState();
+  const [width, setWidth] = useState();
+  const [type, setType] = useState();
   const [selectedRoute, setSelectedRoute] = useState();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -55,12 +55,14 @@ export default function PlanRoute() {
     setSelectedRoute()
   }
   const changeFrom = (event,values) => {
-    console.log(event)
-    setFrom(values.title);
+    if(values){
+      setFrom(values.title);
+    }
   };
   const changeTo = (event,values) => {
-    console.log(values)
-    setTo(values.title);
+    if(values){
+      setTo(values.title);
+    }
   };
   const changeWeight = (event) => {
     console.log("Changeweight " + event.target.value)
@@ -76,7 +78,9 @@ export default function PlanRoute() {
     setWidth(event.target.value);
   };
   const changeType = (event,values) => {
-    setType(values.title);
+    if(values){
+      setType(values.title);
+    }
   };
   const changeEmail = (event) => {
     setEmail(event.target.value);
