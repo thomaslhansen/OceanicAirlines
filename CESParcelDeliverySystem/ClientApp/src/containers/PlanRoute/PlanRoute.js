@@ -16,21 +16,44 @@ export default function PlanRoute() {
   const [lenght, setLength] = useState(0);
   const [width, setWidth] = useState(0);
   const [type, setType] = useState(0);
+  const [selectedRoute, setSelectedRoute] = useState();
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
 
   const selectRoute = (route) => {
-    const info = JSON.stringify({
-      from: document.getElementById("from").value,
-      to: document.getElementById("to").value,
-      weight: document.getElementById("weight").value,
-      height: document.getElementById("height").value,
-      lenght: document.getElementById("length").value,
-      width: document.getElementById("width").value,
-      type: document.getElementById("type").value,
-      route: selectedDate,
 
+    setSelectedRoute(route)
+    }
+  const confirmRoute = () => {
+    const body = JSON.stringify({
+      fromLocation: from,
+      toLocation: to,
+      weight: weight,
+      height: height,
+      lenght: lenght,
+      width: width,
+      isCancelled: false,
+      price: selectedRoute.priceInDollars,
+      duration: selectedRoute.durationInHours,
+      date: selectedDate,
+      customerName: name,
+      customerEmail: email
     })
+    console.log(body)
+    fetch('/order', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: body
+    }).then(response => response.status)
+    .then(data => console.log(data));
+    setSelectedRoute()
   }
-
+    const cancel = () => {
+    setSelectedRoute()
+  }
   const changeFrom = (event,values) => {
     console.log(event)
     setFrom(values.title);
@@ -40,7 +63,7 @@ export default function PlanRoute() {
     setTo(values.title);
   };
   const changeWeight = (event) => {
-    console.log("Changeweight " +event.target.value)
+    console.log("Changeweight " + event.target.value)
     setWeight(event.target.value);
   };
   const changeHeight = (event) => {
@@ -54,6 +77,12 @@ export default function PlanRoute() {
   };
   const changeType = (event,values) => {
     setType(values.title);
+  };
+  const changeEmail = (event) => {
+    setEmail(event.target.value);
+  };
+  const changeName = (event) => {
+    setName(event.target.value);
   };
 
   const handleDateChange = (date) => {
@@ -93,7 +122,7 @@ export default function PlanRoute() {
       },
       body: body
     }).then(response => response.json())
-    .then(data => console.log(data.payload));
+    .then(data => setRoutes(data.payload));
   }
 
   return (
@@ -105,7 +134,7 @@ export default function PlanRoute() {
     style={{ minHeight: '100vh' }}>
     <Grid item style={{ minWidth: '70vw' }}>
     {typeof selectedRoute !== 'undefined'
-    ? <SearchTable routes={routes} selectRoute={selectRoute}/>
+    ? <SearchTable routes={[selectedRoute]} selectRoute={selectRoute}/>
     : <SearchBox locations={locations} selectedDate={selectedDate} handleDateChange={handleDateChange} getRoutes={getRoutes} from={from}
     to={to} weight={weight} height={height} lenght={lenght} width={width} type={type} changeFrom={changeFrom} changeTo={changeTo} changeWeight={changeWeight} changeHeight={changeHeight}
     changeLength={changeLength} changeWidth={changeWidth} changeType={changeType}/>
@@ -114,8 +143,9 @@ export default function PlanRoute() {
     <Grid item style={{ minWidth: '90vw' }}>
     {typeof selectedRoute !== 'undefined'
     ? <ConfirmRoute from={from}
-    to={to} weight={weight} height={height} lenght={lenght} width={width} type={type}/>
-    :<SearchTable routes={routes} selectRoute={selectRoute}/>
+    to={to} weight={weight} height={height} lenght={lenght} width={width} type={type} name={name} email={email} date={selectedDate}
+     changeEmail={changeEmail} changeName={changeName} confirmRoute={confirmRoute} cancel={cancel}/>
+    :<SearchTable routes={routes} selectRoute={selectRoute} />
     }
     </Grid>
   </Grid>

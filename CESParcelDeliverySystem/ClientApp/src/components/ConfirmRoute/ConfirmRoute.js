@@ -33,27 +33,27 @@ export default function ConfirmRoute(props) {
             <List>
               <ListItem>
               <Typography variant="h6">
-                  Weight:
+                  Weight: {props.weight} KG
               </Typography>
               </ListItem>
               <ListItem>
               <Typography variant="h6">
-                  Length:
+                  Length: {props.lenght} cm
               </Typography>
               </ListItem>
               <ListItem>
               <Typography variant="h6">
-                  Width:
+                  Width: {props.width} cm
               </Typography>
               </ListItem>
               <ListItem>
               <Typography variant="h6">
-                  Height:
+                  Height: {props.height} cm
               </Typography>
               </ListItem>
               <ListItem>
               <Typography variant="h6">
-                  Type:
+                  Type: {props.type} cm
               </Typography>
               </ListItem>
             </List>
@@ -66,23 +66,23 @@ export default function ConfirmRoute(props) {
               </Typography>
               </Grid>
               <Grid item xs={5}>
-              <TextField id="email" label="Email" type="mail"/>
+              <TextField id="email" label="Email" type="mail" onChange={props.changeEmail} value={props.email}/>
               </Grid>
                 <Grid item xs={5}>
-                <TextField id="weight" label="Name" type="name"/>
+                <TextField id="name" label="Name" type="name" onChange={props.changeName} value={props.name}/>
               </Grid>
             </Grid>
           </Grid>
           <Grid item xs={4}>
             <Typography variant="h6">
-                Date:
+                Date: {props.date.toLocaleDateString("en-US")}
             </Typography>
             <Box mt={20} mr={2} spacing={1}>
             <ButtonGroup variant='contained' aria-label="contained primary button group">
-                <Button color="warning" onClick={ cancel }>
+                <Button color="warning" onClick={ props.cancel }>
                   Cancel
                 </Button>
-                <Button color="primary" onClick={ confirmRoute }>
+                <Button color="primary" onClick={ props.confirmRoute }>
                   Confirm Route
                 </Button>
               </ButtonGroup>
