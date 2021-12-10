@@ -44,6 +44,11 @@ namespace CESParcelDeliverySystem.BusinessLogic.RoutePlanner
             return _v;
         }
 
+        public Type GetType()
+        {
+            return _type;
+        }
+
         public int Target(int vertex)
         {
             if (vertex == _v) return _w;
