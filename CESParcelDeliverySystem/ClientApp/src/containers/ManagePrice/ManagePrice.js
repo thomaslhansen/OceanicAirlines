@@ -75,9 +75,9 @@ const updatePrice = async (row) => {
   .then(response => response.json())
   .then(data =>
   setRows([
-    createData('<1 kg',data.find(element => element.id === 1), data.find(element => element.id === 2),data.find(element => element.id === 3)),
-    createData('1-5 kg', data.find(element => element.id === 4), data.find(element => element.id === 5),data.find(element => element.id === 6)),
-    createData('>5 kg', data.find(element => element.id === 7), data.find(element => element.id === 8),data.find(element => element.id === 9)),
+    createData('<1 kg',data.find(element => element.id === 1), data.find(element => element.id === 4),data.find(element => element.id === 7)),
+    createData('1-5 kg', data.find(element => element.id === 2), data.find(element => element.id === 5),data.find(element => element.id === 8)),
+    createData('>5 kg', data.find(element => element.id === 3), data.find(element => element.id === 6),data.find(element => element.id === 9)),
   ]))
   },[]);
 
