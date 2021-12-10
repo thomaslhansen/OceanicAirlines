@@ -32,7 +32,12 @@ function createData(route, time, cost) {
   return { route, time, cost};
 }
 
-
+function createRouteString(solution){
+  console.log(solution[0])
+  var string = solution[0].origin
+  solution.forEach(route => string= string + " (" +route.transportMode + ") "+ route.destination)
+  return string
+}
 const useStyles = makeStyles({
   table: {
     minWidth: 700,
@@ -56,7 +61,7 @@ export default function SearchTable(props) {
         <TableBody>
           {props.routes.map((route) => (
             <StyledTableRow key={route.id}>
-              <StyledTableCell align="right">To be done</StyledTableCell>
+              <StyledTableCell align="right">{createRouteString(route.solution)}</StyledTableCell>
               <StyledTableCell align="right">{route.durationInHours} h</StyledTableCell>
               <StyledTableCell align="right">{route.priceInDollars} $</StyledTableCell>
               <StyledTableCell align="right">                  
