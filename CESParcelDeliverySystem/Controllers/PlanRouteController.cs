@@ -165,8 +165,6 @@ namespace CESParcelDeliverySystem.Controllers
                     elem.Solution = sorter.ExecuteImplementation();
                 }
 
-                shipmentRequest.Sort = "cheapest";
-
                 if (shipmentRequest.Sort.ToLower() == "fastest")
                 {
                     outputList = outputList.OrderByDescending(o => o.PriceInDollars).ToList();
