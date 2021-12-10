@@ -44,7 +44,7 @@ namespace CESParcelDeliverySystem.Controllers
                 {
                     Height = shipmentRequest.Height,
                     Length = shipmentRequest.Length,
-                    Weight = shipmentRequest.Weight,
+                    Weight = shipmentRequest.Weight*1000,
                     Width = shipmentRequest.Width
                 };
 

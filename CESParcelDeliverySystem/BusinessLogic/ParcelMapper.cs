@@ -35,16 +35,16 @@ namespace CESParcelDeliverySystem.BusinessLogic
 
         public string EvaluateSizeClass()
         {
-            var minimum = new List<int> {Height, Height, Width}.Min();
-            if (minimum > 200)
+            var maximum = new List<int> {Height, Height, Width}.Max();
+            if (maximum > 200)
             {
                 return "unsupported";
             }
-            else if (minimum >= 40)
+            else if (maximum >= 40)
             {
                 return "C";
             }
-            else if (minimum >= 25)
+            else if (maximum >= 25)
             {
                 return "B";
             }
