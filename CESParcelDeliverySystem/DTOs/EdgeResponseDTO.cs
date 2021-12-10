@@ -16,5 +16,10 @@ namespace CESParcelDeliverySystem.DTOs
         public int DurationInHours { get; set; }
 
         public string TransportMode { get; set; }
+
+        public static implicit operator string(EdgeResponseDTO v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
