@@ -15,6 +15,7 @@ import Paper from '@material-ui/core/Paper';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
+import Box from '@material-ui/core/Box';
 import MenuItem from '@material-ui/core/MenuItem';
 
 export default function ManageLocation() {
@@ -75,6 +76,11 @@ const updateLocation = async (row) => {
   const classes = useStyles();
   return (
     <TableContainer component={Paper}>
+      <Box m={2}>
+      <Typography variant="h3">
+        Manage Location
+      </Typography>
+      </Box>
       <Table className={classes.table} aria-label="customized table">
         <TableHead>
           <TableRow>

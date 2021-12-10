@@ -13,6 +13,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
+import Box from '@material-ui/core/Box';
 
 
 export default function ManageLocation() {
@@ -111,6 +112,11 @@ const updatePrice = async (row) => {
   const classes = useStyles();
   return (
     <TableContainer component={Paper}>
+      <Box m={2}>
+      <Typography variant="h3">
+        Manage Price
+      </Typography>
+      </Box>
       <Table className={classes.table} aria-label="customized table">
         <TableHead>
           <TableRow>

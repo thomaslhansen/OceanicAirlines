@@ -56,7 +56,7 @@ export default function SearchBox(props) {
               direction="column"
               alignItems="center"
               justifyContent="center">
-              <Box mt={4}>
+              <Box m={2}>
                 <Typography variant="h3">
                   Export Data
                 </Typography>

@@ -40,7 +40,7 @@ export default function SearchBox(props) {
               <ListItem>
               <Autocomplete
                 id="type"
-                options={[{title: 'test'}]}
+                options={[{title: 'Recorded Delivery'},{title: 'Weapons'},{title: 'Cautios parcel'},{title: 'Refigerated goods'}]}
                 getOptionLabel={(option) => option.title}
                 style={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} label="Type" variant="outlined" />}
