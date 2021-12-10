@@ -50,11 +50,6 @@ const Header = props => {
           Manage Price
         </Button>
         </Link>
-        <Link to="/export-data" style={{ textDecoration: 'none' }}>
-        <Button variant='contained' color="primary">
-          Export Data
-        </Button>
-        </Link>
       </Toolbar>
     </AppBar>
   );
