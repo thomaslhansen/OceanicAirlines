@@ -30,7 +30,7 @@ namespace CESParcelDeliverySystem.BusinessLogic.RoutePlanner
 				}
 			}
 			this._graph = CreateGraph(noOfVertices, edges);
-			//this._graph = CreateGraph(noOfVertices);
+			//this._graph = CreateGraphTest(noOfVertices);
 			this._openNodes = new Queue<SearchNode>();
 			this._solutions = new List<SearchNode>();
 		}
@@ -71,6 +71,27 @@ namespace CESParcelDeliverySystem.BusinessLogic.RoutePlanner
             return type;
         }
 
+        private void CleanupSolutionList()
+        {
+			List<SearchNode> temp = new List<SearchNode>();
+			foreach (SearchNode node in _solutions)
+            {
+				bool nodeIsDominated = false;
+				foreach(SearchNode node2 in _solutions)
+                {
+					if(node.IsDominatedBy(node2.Cost(), node2.Time()))
+                    {
+						nodeIsDominated = true;
+					}
+                }
+				if (!nodeIsDominated)
+                {
+					temp.Add(node); 
+				}		
+			}
+			_solutions = temp;
+        }
+
         public List<SearchNode> Plan()
         {
 			int[] visited = new int[_noOfVertices];
@@ -86,6 +107,7 @@ namespace CESParcelDeliverySystem.BusinessLogic.RoutePlanner
 					_openNodes.Enqueue(child);
 				}
 			}
+			CleanupSolutionList();
 			return _solutions;
 		}
 
@@ -140,7 +162,7 @@ namespace CESParcelDeliverySystem.BusinessLogic.RoutePlanner
 
 		private Graph CreateGraphTest(int noOfVertices)
         {
-			return GetDummyGraphPlaneTruck(noOfVertices);
+			return GetDummyGraphPlaneTruckShip(noOfVertices);
 		}
 
 		public List<Edge> GetRelevantAdjacent(SearchNode currentNode)
@@ -267,6 +289,97 @@ namespace CESParcelDeliverySystem.BusinessLogic.RoutePlanner
 			graph.AddEdge(new Edge(28, 17, 15, 20, Edge.Type.Truck));
 			graph.AddEdge(new Edge(28, 8, 9, 12, Edge.Type.Truck));
 			graph.AddEdge(new Edge(8, 17, 12, 16, Edge.Type.Truck));
+			return graph;
+		}
+
+		public Graph GetDummyGraphPlaneTruckShip(int noOfVertices)
+		{
+			Graph graph = new Graph(noOfVertices);
+			graph.AddEdge(new Edge(24, 26, 68, 8, Edge.Type.Plane));
+			graph.AddEdge(new Edge(24, 16, 68, 8, Edge.Type.Plane));
+			graph.AddEdge(new Edge(16, 20, 68, 8, Edge.Type.Plane));
+			graph.AddEdge(new Edge(16, 9, 68, 8, Edge.Type.Plane));
+			graph.AddEdge(new Edge(26, 9, 68, 8, Edge.Type.Plane));
+			graph.AddEdge(new Edge(26, 6, 68, 8, Edge.Type.Plane));
+			graph.AddEdge(new Edge(20, 22, 68, 8, Edge.Type.Plane));
+			graph.AddEdge(new Edge(9, 15, 68, 8, Edge.Type.Plane));
+			graph.AddEdge(new Edge(9, 10, 68, 8, Edge.Type.Plane));
+			graph.AddEdge(new Edge(22, 14, 68, 8, Edge.Type.Plane));
+			graph.AddEdge(new Edge(14, 10, 68, 8, Edge.Type.Plane));
+			graph.AddEdge(new Edge(14, 11, 68, 8, Edge.Type.Plane));
+			graph.AddEdge(new Edge(14, 8, 68, 8, Edge.Type.Plane));
+			graph.AddEdge(new Edge(14, 1, 68, 8, Edge.Type.Plane));
+			graph.AddEdge(new Edge(14, 13, 68, 8, Edge.Type.Plane));
+			graph.AddEdge(new Edge(10, 15, 68, 8, Edge.Type.Plane));
+			graph.AddEdge(new Edge(11, 6, 68, 8, Edge.Type.Plane));
+			graph.AddEdge(new Edge(6, 23, 68, 8, Edge.Type.Plane));
+			graph.AddEdge(new Edge(23, 3, 68, 8, Edge.Type.Plane));
+			graph.AddEdge(new Edge(23, 29, 68, 8, Edge.Type.Plane));
+			graph.AddEdge(new Edge(29, 12, 68, 8, Edge.Type.Plane));
+			graph.AddEdge(new Edge(29, 8, 68, 8, Edge.Type.Plane));
+			graph.AddEdge(new Edge(12, 1, 68, 8, Edge.Type.Plane));
+			graph.AddEdge(new Edge(24, 27, 15, 20, Edge.Type.Truck));
+			graph.AddEdge(new Edge(24, 16, 6, 8, Edge.Type.Truck));
+			graph.AddEdge(new Edge(24, 19, 15, 20, Edge.Type.Truck));
+			graph.AddEdge(new Edge(27, 26, 9, 12, Edge.Type.Truck));
+			graph.AddEdge(new Edge(26, 18, 18, 24, Edge.Type.Truck));
+			graph.AddEdge(new Edge(18, 3, 12, 16, Edge.Type.Truck));
+			graph.AddEdge(new Edge(18, 6, 9, 12, Edge.Type.Truck));
+			graph.AddEdge(new Edge(6, 19, 24, 32, Edge.Type.Truck));
+			graph.AddEdge(new Edge(6, 23, 12, 16, Edge.Type.Truck));
+			graph.AddEdge(new Edge(6, 2, 6, 8, Edge.Type.Truck));
+			graph.AddEdge(new Edge(6, 30, 12, 16, Edge.Type.Truck));
+			graph.AddEdge(new Edge(6, 21, 21, 28, Edge.Type.Truck));
+			graph.AddEdge(new Edge(23, 0, 9, 12, Edge.Type.Truck));
+			graph.AddEdge(new Edge(0, 12, 9, 12, Edge.Type.Truck));
+			graph.AddEdge(new Edge(0, 29, 9, 12, Edge.Type.Truck));
+			graph.AddEdge(new Edge(12, 31, 18, 24, Edge.Type.Truck));
+			graph.AddEdge(new Edge(31, 17, 9, 12, Edge.Type.Truck));
+			graph.AddEdge(new Edge(31, 29, 15, 20, Edge.Type.Truck));
+			graph.AddEdge(new Edge(29, 17, 18, 24, Edge.Type.Truck));
+			graph.AddEdge(new Edge(29, 2, 6, 8, Edge.Type.Truck));
+			graph.AddEdge(new Edge(29, 11, 12, 16, Edge.Type.Truck));
+			graph.AddEdge(new Edge(11, 15, 12, 16, Edge.Type.Truck));
+			graph.AddEdge(new Edge(15, 4, 9, 12, Edge.Type.Truck));
+			graph.AddEdge(new Edge(15, 17, 30, 40, Edge.Type.Truck));
+			graph.AddEdge(new Edge(15, 28, 33, 44, Edge.Type.Truck));
+			graph.AddEdge(new Edge(15, 8, 33, 44, Edge.Type.Truck));
+			graph.AddEdge(new Edge(4, 30, 18, 24, Edge.Type.Truck));
+			graph.AddEdge(new Edge(4, 21, 15, 20, Edge.Type.Truck));
+			graph.AddEdge(new Edge(4, 6, 18, 24, Edge.Type.Truck));
+			graph.AddEdge(new Edge(30, 21, 21, 28, Edge.Type.Truck));
+			graph.AddEdge(new Edge(21, 25, 15, 20, Edge.Type.Truck));
+			graph.AddEdge(new Edge(25, 9, 12, 16, Edge.Type.Truck));
+			graph.AddEdge(new Edge(25, 20, 15, 20, Edge.Type.Truck));
+			graph.AddEdge(new Edge(9, 20, 15, 20, Edge.Type.Truck));
+			graph.AddEdge(new Edge(20, 5, 12, 16, Edge.Type.Truck));
+			graph.AddEdge(new Edge(5, 16, 24, 32, Edge.Type.Truck));
+			graph.AddEdge(new Edge(16, 19, 15, 20, Edge.Type.Truck));
+			graph.AddEdge(new Edge(10, 28, 12, 16, Edge.Type.Truck));
+			graph.AddEdge(new Edge(10, 14, 12, 16, Edge.Type.Truck));
+			graph.AddEdge(new Edge(28, 17, 15, 20, Edge.Type.Truck));
+			graph.AddEdge(new Edge(28, 8, 9, 12, Edge.Type.Truck));
+			graph.AddEdge(new Edge(8, 17, 12, 16, Edge.Type.Truck));
+			graph.AddEdge(new Edge(24, 7, 3, 12, Edge.Type.Ship));
+			graph.AddEdge(new Edge(24, 27, 3, 12, Edge.Type.Ship));
+			graph.AddEdge(new Edge(27, 3, 5, 20, Edge.Type.Ship));
+			graph.AddEdge(new Edge(3, 23, 4, 16, Edge.Type.Ship));
+			graph.AddEdge(new Edge(23, 12, 4, 16, Edge.Type.Ship));
+			graph.AddEdge(new Edge(12, 17, 8, 32, Edge.Type.Ship));
+			graph.AddEdge(new Edge(12, 1, 8, 32, Edge.Type.Ship));
+			graph.AddEdge(new Edge(17, 13, 3, 12, Edge.Type.Ship));
+			graph.AddEdge(new Edge(13, 14, 8, 24, Edge.Type.Ship));
+			graph.AddEdge(new Edge(14, 10, 3, 12, Edge.Type.Ship));
+			graph.AddEdge(new Edge(14, 22, 9, 36, Edge.Type.Ship));
+			graph.AddEdge(new Edge(10, 22, 10, 40, Edge.Type.Ship));
+			graph.AddEdge(new Edge(10, 9, 11, 44, Edge.Type.Ship));
+			graph.AddEdge(new Edge(10, 21, 9, 36, Edge.Type.Ship));
+			graph.AddEdge(new Edge(21, 9, 4, 16, Edge.Type.Ship));
+			graph.AddEdge(new Edge(9, 20, 4, 16, Edge.Type.Ship));
+			graph.AddEdge(new Edge(20, 5, 3, 12, Edge.Type.Ship));
+			graph.AddEdge(new Edge(20, 22, 11, 44, Edge.Type.Ship));
+			graph.AddEdge(new Edge(22, 5, 10, 40, Edge.Type.Ship));
+			graph.AddEdge(new Edge(5, 7, 5, 20, Edge.Type.Ship));
 			return graph;
 		}
 	}
