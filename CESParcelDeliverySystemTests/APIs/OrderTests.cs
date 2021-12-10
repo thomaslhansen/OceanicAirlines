@@ -14,8 +14,8 @@ namespace CESParcelDeliverySystem.APIs.Tests
         [TestMethod()]
         public void OrderTest()
         {
-            var order = new Order(1, "Hans", "Hans@mail.com", new Models.Location(1, "ABBA", false),
-                new Models.Location(2, "AB", true), DateTime.Now, 200, 20, 20, 20, 20, false);
+            var order = new Order(1, "Hans", "Hans@mail.com", "ABBA",
+                "AB", DateTime.Now, 200, 20, 20, 20, 20, false);
             Assert.IsNotNull(order);
         }
 
@@ -28,11 +28,10 @@ namespace CESParcelDeliverySystem.APIs.Tests
         }
 
         [TestMethod()]
-        public void CreateOrderFalseTest()
+        public void CreateOrderTrueTest()
         {
-            var order = new Models.Order();
-            order.CostumerEmail = "Hans@mail.com";
-            order.CostumerName = "Hans Hansen";
+            var order = new Order(1, "Hans", "Hans@mail.com", "ABBA",
+                "AB", DateTime.Now, 200, 20, 20, 20, 20, false);
             var result = Order.CreateOrder(order);
             Assert.IsTrue(result);
         }
