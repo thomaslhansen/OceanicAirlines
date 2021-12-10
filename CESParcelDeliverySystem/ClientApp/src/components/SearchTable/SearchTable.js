@@ -20,6 +20,22 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
+function IconForNode(inputString){
+  if (inputString.toLowerCase() == 'plane'){
+    return '✈️'
+  }
+  
+  if (inputString.toLowerCase() == 'truck') 
+  {
+    return '🚚'
+  }
+  
+  if (inputString.toLowerCase() == 'ship') 
+  {
+    return '🚢'
+  }
+} 
+
 const StyledTableRow = withStyles((theme) => ({
   root: {
     '&:nth-of-type(odd)': {
@@ -35,7 +51,7 @@ function createData(route, time, cost) {
 function createRouteString(solution){
   console.log(solution[0])
   var string = solution[0].origin
-  solution.forEach(route => string= string + " (" +route.transportMode + ") "+ route.destination)
+  solution.forEach(route => string= string + "   > " + IconForNode(route.transportMode) + "   > "+ route.destination)
   return string
 }
 const useStyles = makeStyles({
